@@ -3,16 +3,20 @@ package PropertyManagement;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin
 @RestController
 public class PropertyManagement {
 	
-	@RequestMapping("/updateProperty")
-	public void updateProperty(Map<String, Object> request) {
-		
+	private DAO.PropertyDAO PropertyDAO = new DAO.PropertyDAO();
+	
+	@PostMapping("/updateProperty")
+	public String updateProperty(@RequestBody Map<String, Object> request) {
+			
+		return PropertyDAO.updateProperty(request);
 	}
 	
 }

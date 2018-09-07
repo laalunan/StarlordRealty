@@ -3,7 +3,7 @@ package Entity;
 public class Property {
 	protected int propertyID;
 	protected String typeOfProperty;
-	protected double seelingPrice;
+	protected double sellingPrice;
 	protected int bedroomCount;
 	protected int bathroomCount;
 	protected String amenities;
@@ -23,6 +23,8 @@ public class Property {
 	protected String city;
 	protected String country;
 	protected String zipCode;
+	protected Double totalArea;
+	
 	public int getPropertyID() {
 		return propertyID;
 	}
@@ -35,11 +37,11 @@ public class Property {
 	public void setTypeOfProperty(String typeOfProperty) {
 		this.typeOfProperty = typeOfProperty;
 	}
-	public double getSeelingPrice() {
-		return seelingPrice;
+	public double getSellingPrice() {
+		return sellingPrice;
 	}
-	public void setSeelingPrice(double seelingPrice) {
-		this.seelingPrice = seelingPrice;
+	public void setSellingPrice(double seelingPrice) {
+		this.sellingPrice = seelingPrice;
 	}
 	public int getBedroomCount() {
 		return bedroomCount;
@@ -155,5 +157,10 @@ public class Property {
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
-	
+	public Double getTotalArea() {
+		return totalArea;
+	}
+	public void setTotalArea(Double totalArea) {
+		this.totalArea = totalArea;
+	}
 }

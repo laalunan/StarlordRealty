@@ -7,23 +7,20 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class DBConnectionProperties implements DBConnectionFactory {
 
-	@Autowired
-	private DatabaseProperties db;
 	
 	@Override
 	public Connection getConnection() {
 		
 		try {
 
-			if ("true".equalsIgnoreCase(db.getUseDatabase2())) {
+			if ("true".equalsIgnoreCase("true")) {
 
-				Class.forName(db.getDriverName());
-				Connection conn = DriverManager.getConnection(db.getPropertiesUrl(),
-						db.getDatabaseUsername(), db.getDatabasePassword());
+				Class.forName("com.mysql.jdbc.Driver");
+				Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/properties",
+						"gradhire", "bootcamp");
 				return conn;
 			}
 
