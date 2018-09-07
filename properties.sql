@@ -48,6 +48,7 @@ CREATE TABLE `property` (
   `city` varchar(45) DEFAULT NULL,
   `country` varchar(45) DEFAULT NULL,
   `zipCode` varchar(45) DEFAULT NULL,
+  `clickCount` int(11) NOT NULL,
   PRIMARY KEY (`propertyID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -70,4 +71,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-06 17:26:33
+-- Dump completed on 2018-09-07 14:23:42
