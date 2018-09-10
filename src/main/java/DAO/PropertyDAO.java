@@ -148,7 +148,7 @@ public class PropertyDAO {
 			while (myRs.next()) {
 				Property p = new Property();
 				
-				
+				p.setPropertyID(myRs.getInt("propertyID"));
 				p.setTypeOfProperty(myRs.getString("typeOfProperty"));
 				p.setSellingPrice(myRs.getInt("sellingPrice"));
 				p.setBedroomCount(myRs.getInt("bedroomCount"));
