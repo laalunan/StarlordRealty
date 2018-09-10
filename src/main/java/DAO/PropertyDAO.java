@@ -222,12 +222,63 @@ public class PropertyDAO {
 		} catch (Exception e) {
 		}finally {
 			DBProperty.closeConnection(conn, pstmt);
-		}
-		
+		}	
 		
 		return propertylist;
 		
 	}
 	
+	public Property viewProperty(Map<String, Object> request) {
+		Connection conn = DBProperty.getConnection();
+		PreparedStatement pstmt = null;
+		String query = "SELECT * FROM property WHERE propertyID = ?";
+		
+		Property p = new Property();
+		ResultSet rs = null;
+		try {
+
+			if (conn != null) {
+				int i = 1;
+				
+				pstmt = conn.prepareStatement(query);
+				pstmt.setInt(i++, Integer.parseInt(request.get("propertyID").toString()));
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					p.setPropertyID(rs.getInt("propertyID"));
+					p.setTypeOfProperty(rs.getString("typeOfProperty"));
+					p.setSellingPrice(rs.getDouble("sellingPrice"));
+					p.setPropertyClassification(rs.getString("propertyClassification"));
+					p.setTotalArea(rs.getDouble("totalArea"));
+					p.setBedroomCount(rs.getInt("bedroomCount"));
+					p.setBathroomCount(rs.getInt("bathroomCount"));
+					p.setAmenities(rs.getString("amenities"));
+					p.setNoOfGarage(rs.getInt("noOfGarage"));
+					p.setGarageSize(rs.getDouble("garageSize"));
+					p.setYearBuilt(rs.getString("yearBuilt"));
+					p.setBasement(rs.getInt("basement"));
+					p.setBasementDescription(rs.getString("basementDescription"));
+					p.setRoofingDescription(rs.getString("roofingDescription"));
+					p.setAdditionalRemarks(rs.getString("additionalRemarks"));
+					p.setAvailabilityStatus(rs.getString("availabilityStatus"));
+					p.setNameOfDeveloper(rs.getString("nameOfDeveloper"));
+					p.setNameOfProject(rs.getString("nameOfProject"));
+					p.setUserID(rs.getInt("userID"));
+					p.setDateTime(rs.getString("dateTime"));
+					p.setAddress(rs.getString("address"));
+					p.setCity(rs.getString("city"));
+					p.setCountry(rs.getString("country"));
+					p.setZipCode(rs.getString("zipCode"));
+					p.setClickCount(rs.getInt("clickCount"));
+				}
+				
+			}
+		} catch (SQLException ex) {
+			Logger.getLogger(PropertyDAO.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			DBProperty.closeConnection(conn, pstmt);
+		}
+		return p;
+	}
 	
 }

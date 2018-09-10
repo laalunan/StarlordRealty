@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import Entity.Property;
+
 @CrossOrigin
 @RestController
 public class PropertyManagement {
@@ -25,5 +27,11 @@ public class PropertyManagement {
 
 		return word;
 		
+	}
+	
+	@PostMapping(value = "/viewProperty")
+	public Property viewProperty(@RequestBody Map<String, Object> request) {
+		
+		return PropertyDAO.viewProperty(request);
 	}
 }
