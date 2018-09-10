@@ -25,6 +25,7 @@ public class Property {
 	protected String zipCode;
 	protected int clickCount;
 	protected Double totalArea;
+	protected String propertyClassification;
 	
 	public int getPropertyID() {
 		return propertyID;
@@ -170,4 +171,11 @@ public class Property {
 	public void setTotalArea(Double totalArea) {
 		this.totalArea = totalArea;
 	}
+	public String getPropertyClassification() {
+		return propertyClassification;
+	}
+	public void setPropertyClassification(String propertyClassification) {
+		this.propertyClassification = propertyClassification;
+	}
+	
 }
