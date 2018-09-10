@@ -169,5 +169,65 @@ public class PropertyDAO {
 
 	}
 	
+	public List<Property> searchProperty(Map<String, Object> request){
+		
+		List<Property> propertylist = new ArrayList<Property>();
+		
+		Connection conn = DBProperty.getConnection();
+		PreparedStatement pstmt = null;
+		
+		
+		
+		String query = "SELECT * FROM properties.property where city = ? or typeOfProperty = ? or propertyClassification = ?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, request.get("city").toString());
+			pstmt.setString(2, request.get("typeOfProperty").toString());
+			pstmt.setString(3, request.get("propertyClassification").toString());
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				
+				Property p = new Property();
+				
+				p.setPropertyID(rs.getInt("propertyID"));
+				p.setCity(rs.getString("city"));
+				p.setTypeOfProperty(rs.getString("typeOfProperty"));
+				p.setPropertyClassification(rs.getString("propertyClassification"));
+				p.setSellingPrice(rs.getDouble("sellingPrice"));
+				p.setBedroomCount(rs.getInt("bedroomCount"));
+				p.setBathroomCount(rs.getInt("bathroomCount"));
+				p.setAmenities(rs.getString("amenities"));
+				p.setNoOfGarage(rs.getInt("noOfGarage"));
+				p.setGarageSize(rs.getDouble("garageSize"));
+				p.setYearBuilt(rs.getString("yearBuilt"));
+				p.setBasement(rs.getInt("basement"));
+				p.setBasementDescription(rs.getString("basementDescription"));
+				p.setRoofingDescription(rs.getString("roofingDescription"));
+				p.setAdditionalRemarks(rs.getString("additionalRemarks"));
+				p.setAvailabilityStatus(rs.getString("availabilityStatus"));
+				p.setNameOfDeveloper(rs.getString("nameOfDeveloper"));
+				p.setNameOfProject(rs.getString("nameOfProject"));
+				p.setDateTime(rs.getString("dateTime"));
+				p.setAddress(rs.getString("address"));
+				p.setCountry(rs.getString("country"));
+				p.setZipCode(rs.getString("zipCode"));
+				p.setClickCount(rs.getInt("clickCount"));
+				p.setTotalArea(rs.getDouble("totalArea"));
+				
+				propertylist.add(p);
+			}
+		} catch (Exception e) {
+		}finally {
+			DBProperty.closeConnection(conn, pstmt);
+		}
+		
+		
+		return propertylist;
+		
+	}
+	
 	
 }

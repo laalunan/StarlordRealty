@@ -42,8 +42,8 @@ public class Property {
 	public double getSellingPrice() {
 		return sellingPrice;
 	}
-	public void setSellingPrice(double seelingPrice) {
-		this.sellingPrice = seelingPrice;
+	public void setSellingPrice(double sellingPrice) {
+		this.sellingPrice = sellingPrice;
 	}
 	public int getBedroomCount() {
 		return bedroomCount;
