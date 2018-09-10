@@ -23,6 +23,7 @@ public class Property {
 	protected String city;
 	protected String country;
 	protected String zipCode;
+	protected int clickCount;
 	protected Double totalArea;
 	
 	public int getPropertyID() {
@@ -156,6 +157,12 @@ public class Property {
 	}
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
+	}
+	public int getClickCount() {
+		return clickCount;
+	}
+	public void setClickCount(int clickCount) {
+		this.clickCount = clickCount;
 	}
 	public Double getTotalArea() {
 		return totalArea;

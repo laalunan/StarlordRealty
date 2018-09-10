@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,6 +39,18 @@ public class DBConnectionAccounts implements DBConnectionFactory {
 		if (conn != null) {
 			try {
 				ps.close();
+				conn.close();
+			} catch (Exception e) {
+				System.out.println("DATABASE ERROR: CLOSING");
+			}
+		}
+	}
+
+	@Override
+	public void closeConnection(Connection conn, Statement s) {
+		if (conn != null) {
+			try {
+				s.close();
 				conn.close();
 			} catch (Exception e) {
 				System.out.println("DATABASE ERROR: CLOSING");

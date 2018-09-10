@@ -2,10 +2,17 @@ package DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import Entity.Property;
 
 public class PropertyDAO {
 
@@ -123,4 +130,44 @@ public class PropertyDAO {
 		}
 		return word;
 	}
+	
+	public  Map<String, List<Property>> sortProperty() {
+		List<Property> propertyList = new ArrayList<Property>();
+		
+		Map<String, List<Property>> map = new HashMap<String, List<Property>>();
+		
+		Connection myConn = DBProperty.getConnection();
+		Statement s = null;
+		try {
+			s = myConn.createStatement();
+			ResultSet myRs = s.executeQuery("SELECT propertyID, typeOfProperty, sellingPrice, bedroomCount, city "
+											   + "FROM properties.property "
+											   + "WHERE availabilityStatus = \"AVAILABLE\" "
+											   + "ORDER BY dateTime DESC, clickCount DESC;");
+
+			while (myRs.next()) {
+				Property p = new Property();
+				
+				
+				p.setTypeOfProperty(myRs.getString("typeOfProperty"));
+				p.setSellingPrice(myRs.getInt("sellingPrice"));
+				p.setBedroomCount(myRs.getInt("bedroomCount"));
+				p.setCity(myRs.getString("city"));
+
+				propertyList.add(p);
+			}
+
+			map.put("properties", propertyList);
+			
+		} catch (Exception e) {
+			Logger.getLogger(PropertyDAO.class.getName()).log(Level.SEVERE, null, e);
+		} finally {
+			DBProperty.closeConnection(myConn, s);
+		}
+
+		return map;
+
+	}
+	
+	
 }
