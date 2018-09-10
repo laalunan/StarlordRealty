@@ -20,11 +20,11 @@ public class DBConnectionAccounts implements DBConnectionFactory {
 		
 		try {
 
-			if ("true".equalsIgnoreCase(db.getUseDatabase())) {
+			if ("true".equalsIgnoreCase("true")) {
 
-				Class.forName(db.getDriverName());
-				Connection conn = DriverManager.getConnection(db.getAccountsUrl(),
-						db.getDatabaseUsername(), db.getDatabasePassword());
+				Class.forName("com.mysql.jdbc.Driver");
+				Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/accounts",
+						"gradhire", "bootcamp");
 				return conn;
 			}
 
@@ -48,13 +48,7 @@ public class DBConnectionAccounts implements DBConnectionFactory {
 
 	@Override
 	public void closeConnection(Connection conn, Statement s) {
-		if (conn != null) {
-			try {
-				s.close();
-				conn.close();
-			} catch (Exception e) {
-				System.out.println("DATABASE ERROR: CLOSING");
-			}
-		}
+		// TODO Auto-generated method stub
+		
 	}
 }

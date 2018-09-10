@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan({"PropertyManagement", "DAO", "PropertySearch"})
+@ComponentScan({"PropertyManagement", "DAO", "PropertySearch", "Authentication", "UserProfile"})
 @SpringBootApplication
 public class Application {
 
