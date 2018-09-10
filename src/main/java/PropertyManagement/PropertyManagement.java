@@ -19,4 +19,11 @@ public class PropertyManagement {
 		return PropertyDAO.updateProperty(request);
 	}
 	
+	@PostMapping(value = "/postProperty")
+	public String insertProperty(@RequestBody Map<String, Object> request) {
+		String word = PropertyDAO.insertProperty(request);
+
+		return word;
+		
+	}
 }
