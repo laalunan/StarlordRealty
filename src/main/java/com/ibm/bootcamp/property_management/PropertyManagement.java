@@ -1,4 +1,4 @@
-package PropertyManagement;
+package com.ibm.bootcamp.property_management;
 
 import java.util.Map;
 
@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import Entity.Property;
+import com.ibm.bootcamp.entity.Property;
 
 @CrossOrigin
 @RestController
 public class PropertyManagement {
 	
-	private DAO.PropertyDAO PropertyDAO = new DAO.PropertyDAO();
+	private com.ibm.bootcamp.dao.PropertyDAO PropertyDAO = new com.ibm.bootcamp.dao.PropertyDAO();
 	
 	@PostMapping("/updateProperty")
 	public String updateProperty(@RequestBody Map<String, Object> request) {

@@ -1,4 +1,4 @@
-package DAO;
+package com.ibm.bootcamp.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import Entity.Property;
+import com.ibm.bootcamp.entity.Property;
 
 public class PropertyDAO {
 

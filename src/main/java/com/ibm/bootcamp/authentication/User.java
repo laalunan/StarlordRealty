@@ -1,4 +1,4 @@
-package Authentication;
+package com.ibm.bootcamp.authentication;
 
 import org.springframework.beans.factory.annotation.Required;
 

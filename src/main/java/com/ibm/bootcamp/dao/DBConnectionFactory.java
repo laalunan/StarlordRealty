@@ -1,4 +1,4 @@
-package DAO;
+package com.ibm.bootcamp.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

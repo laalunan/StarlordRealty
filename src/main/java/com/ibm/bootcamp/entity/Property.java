@@ -1,4 +1,4 @@
-package Entity;
+package com.ibm.bootcamp.entity;
 
 public class Property {
 	protected int propertyID;

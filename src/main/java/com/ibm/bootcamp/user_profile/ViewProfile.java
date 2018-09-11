@@ -1,4 +1,4 @@
-package UserProfile;
+package com.ibm.bootcamp.user_profile;
 
 
 import java.util.ArrayList;
@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import Entity.Account;
-import DAO.UserDAO;
-import Authentication.User;
+import com.ibm.bootcamp.authentication.User;
+import com.ibm.bootcamp.dao.UserDAO;
+import com.ibm.bootcamp.entity.Account;
 
 @CrossOrigin
 @RestController
 public class ViewProfile {
-	private DAO.UserDAO UserDAO = new DAO.UserDAO();
+	private com.ibm.bootcamp.dao.UserDAO UserDAO = new com.ibm.bootcamp.dao.UserDAO();
 
 	@RequestMapping("/viewprofile")
 	public List<User> view(@RequestBody Map<String, Object> request) {

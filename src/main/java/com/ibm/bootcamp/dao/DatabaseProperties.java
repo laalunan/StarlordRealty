@@ -1,4 +1,4 @@
-package DAO;
+package com.ibm.bootcamp.dao;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

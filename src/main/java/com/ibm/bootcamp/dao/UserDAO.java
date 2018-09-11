@@ -1,4 +1,4 @@
-package DAO;
+package com.ibm.bootcamp.dao;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ibm.bootcamp.authentication.User;
 import com.mysql.cj.exceptions.RSAException;
-
-import Authentication.User;
 
 
 public class UserDAO {

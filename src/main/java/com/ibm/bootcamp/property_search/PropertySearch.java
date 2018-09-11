@@ -1,4 +1,4 @@
-package PropertySearch;
+package com.ibm.bootcamp.property_search;
 
 import java.util.List;
 import java.util.Map;
@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import Entity.Property;
+import com.ibm.bootcamp.entity.Property;
 
 @CrossOrigin
 @RestController
 public class PropertySearch {
 
-	private DAO.PropertyDAO PropertyDAO = new DAO.PropertyDAO();
+	private com.ibm.bootcamp.dao.PropertyDAO PropertyDAO = new com.ibm.bootcamp.dao.PropertyDAO();
 
 	@RequestMapping("/sortProperty")
 	public Map<String, List<Property>> sortProperty() {
