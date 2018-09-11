@@ -130,24 +130,23 @@ public class PropertyDAO {
 		}
 		return word;
 	}
-	
-	public  Map<String, List<Property>> sortProperty() {
+
+	public Map<String, List<Property>> sortProperty() {
 		List<Property> propertyList = new ArrayList<Property>();
-		
+
 		Map<String, List<Property>> map = new HashMap<String, List<Property>>();
-		
+
 		Connection myConn = DBProperty.getConnection();
 		Statement s = null;
 		try {
 			s = myConn.createStatement();
-			ResultSet myRs = s.executeQuery("SELECT propertyID, typeOfProperty, sellingPrice, bedroomCount, city "
-											   + "FROM properties.property "
-											   + "WHERE availabilityStatus = \"AVAILABLE\" "
-											   + "ORDER BY dateTime DESC, clickCount DESC;");
+			ResultSet myRs = s.executeQuery(
+					"SELECT propertyID, typeOfProperty, sellingPrice, bedroomCount, city " + "FROM properties.property "
+							+ "WHERE availabilityStatus = \"AVAILABLE\" " + "ORDER BY dateTime DESC, clickCount DESC;");
 
 			while (myRs.next()) {
 				Property p = new Property();
-				
+
 				p.setPropertyID(myRs.getInt("propertyID"));
 				p.setTypeOfProperty(myRs.getString("typeOfProperty"));
 				p.setSellingPrice(myRs.getInt("sellingPrice"));
@@ -158,7 +157,7 @@ public class PropertyDAO {
 			}
 
 			map.put("properties", propertyList);
-			
+
 		} catch (Exception e) {
 			Logger.getLogger(PropertyDAO.class.getName()).log(Level.SEVERE, null, e);
 		} finally {
@@ -168,30 +167,28 @@ public class PropertyDAO {
 		return map;
 
 	}
-	
-	public List<Property> searchProperty(Map<String, Object> request){
-		
+
+	public List<Property> searchProperty(Map<String, Object> request) {
+
 		List<Property> propertylist = new ArrayList<Property>();
-		
+
 		Connection conn = DBProperty.getConnection();
 		PreparedStatement pstmt = null;
-		
-		
-		
+
 		String query = "SELECT * FROM properties.property where city = ? or typeOfProperty = ? or propertyClassification = ?";
 		try {
 			pstmt = conn.prepareStatement(query);
-			
+
 			pstmt.setString(1, request.get("city").toString());
 			pstmt.setString(2, request.get("typeOfProperty").toString());
 			pstmt.setString(3, request.get("propertyClassification").toString());
-			
+
 			ResultSet rs = pstmt.executeQuery();
-			
+
 			while (rs.next()) {
-				
+
 				Property p = new Property();
-				
+
 				p.setPropertyID(rs.getInt("propertyID"));
 				p.setCity(rs.getString("city"));
 				p.setTypeOfProperty(rs.getString("typeOfProperty"));
@@ -216,35 +213,35 @@ public class PropertyDAO {
 				p.setZipCode(rs.getString("zipCode"));
 				p.setClickCount(rs.getInt("clickCount"));
 				p.setTotalArea(rs.getDouble("totalArea"));
-				
+
 				propertylist.add(p);
 			}
 		} catch (Exception e) {
-		}finally {
+		} finally {
 			DBProperty.closeConnection(conn, pstmt);
-		}	
-		
+		}
+
 		return propertylist;
-		
+
 	}
-	
-	public Property viewProperty(Map<String, Object> request) {
+
+	public Property viewProperty(int propertyID) {
 		Connection conn = DBProperty.getConnection();
 		PreparedStatement pstmt = null;
 		String query = "SELECT * FROM property WHERE propertyID = ?";
-		
+
 		Property p = new Property();
 		ResultSet rs = null;
 		try {
 
 			if (conn != null) {
 				int i = 1;
-				
+
 				pstmt = conn.prepareStatement(query);
-				pstmt.setInt(i++, Integer.parseInt(request.get("propertyID").toString()));
+				pstmt.setInt(i++, propertyID);
 				rs = pstmt.executeQuery();
-				
-				while(rs.next()) {
+
+				while (rs.next()) {
 					p.setPropertyID(rs.getInt("propertyID"));
 					p.setTypeOfProperty(rs.getString("typeOfProperty"));
 					p.setSellingPrice(rs.getDouble("sellingPrice"));
@@ -271,8 +268,17 @@ public class PropertyDAO {
 					p.setZipCode(rs.getString("zipCode"));
 					p.setClickCount(rs.getInt("clickCount"));
 				}
-				
+
+				query = "UPDATE property SET clickCount = (SELECT clickCount WHERE propertyID = ?)+1 WHERE propertyID = ?";
+
+				int j = 1;
+
+				pstmt = conn.prepareStatement(query);
+				pstmt.setInt(j++, propertyID);
+				pstmt.setInt(j++, propertyID);
+				int s = pstmt.executeUpdate();
 			}
+
 		} catch (SQLException ex) {
 			Logger.getLogger(PropertyDAO.class.getName()).log(Level.SEVERE, null, ex);
 		} finally {
@@ -280,5 +286,5 @@ public class PropertyDAO {
 		}
 		return p;
 	}
-	
+
 }
