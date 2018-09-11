@@ -286,5 +286,56 @@ public class PropertyDAO {
 		}
 		return p;
 	}
+	
+	public List<Property> filterProperty(Map<String,Object> request)  {
+		List<Property> propertyList = new ArrayList<Property>();
+		Connection myConn = DBProperty.getConnection();
+		PreparedStatement fpstmt = null;
+		
+		String filter ="SELECT * FROM properties.property WHERE typeOfProperty = ? AND amenities LIKE ? AND sellingPrice > ? AND bedroomCount = ? AND bathroomCount = ? AND noOfGarage = ? AND garageSize = ? AND yearBuilt = ? AND basement = ? AND totalArea = ? ";
+		
+		try {
+			fpstmt = myConn.prepareStatement(filter);
+			
+			fpstmt.setString(1, request.get("typeOfProperty").toString());
+			fpstmt.setString(2, "%" + request.get("amenities").toString() + "%");
+			fpstmt.setDouble(3, Double.parseDouble(request.get("sellingPrice").toString()));
+			fpstmt.setInt(4, Integer.parseInt(request.get("bedroomCount").toString()));
+			fpstmt.setInt(5, Integer.parseInt(request.get("bathroomCount").toString()));
+			fpstmt.setInt(6, Integer.parseInt(request.get("noOfGarage").toString()));
+			fpstmt.setDouble(7, Double.parseDouble(request.get("garageSize").toString()));
+			fpstmt.setString(8,(request.get("yearBuilt").toString()));
+			fpstmt.setInt(9, Integer.parseInt(request.get("basement").toString()));
+			fpstmt.setDouble(10, Double.parseDouble(request.get("totalArea").toString()));
+			
+			ResultSet rs = fpstmt.executeQuery();
+			
+			
+			while (rs.next()) {
+				Property p = new Property();
+				p.setTypeOfProperty(rs.getString("typeOfProperty"));
+				p.setSellingPrice(rs.getDouble("sellingPrice"));
+				p.setAmenities(rs.getString("amenities"));
+				p.setBedroomCount(rs.getInt("bedroomCount"));
+				p.setBathroomCount(rs.getInt("bathroomCount"));
+				p.setNoOfGarage(rs.getInt("noOfGarage"));
+				p.setGarageSize(rs.getInt("garageSize"));
+				p.setYearBuilt(rs.getString("yearBuilt"));
+				p.setBasement(rs.getInt("basement"));
+				p.setTotalArea(rs.getDouble("totalArea"));
+
+				propertyList.add(p);
+			}
+	
+		} catch (SQLException e) {
+			Logger.getLogger(PropertyDAO.class.getName()).log(Level.SEVERE, null, e);
+			e.printStackTrace();
+		} finally {
+			DBProperty.closeConnection(myConn, fpstmt);
+		}
+
+		return propertyList; //sent to 1st
+	}
+	
 
 }
