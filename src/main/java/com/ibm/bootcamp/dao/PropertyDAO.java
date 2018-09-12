@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.ibm.bootcamp.entity.Property;
+import com.mysql.cj.protocol.Resultset;
 
 public class PropertyDAO {
 
@@ -168,16 +169,18 @@ public class PropertyDAO {
 
 	}
 
-public List<Property> searchProperty(String request, String request1, String request2){
+	public List<Property> searchProperty(String request, String request1, String request2){
 		
 		List<Property> propertylist = new ArrayList<Property>();
 		
 		Connection conn = DBProperty.getConnection();
 		PreparedStatement pstmt = null;
+		Statement stmt = null;
 		
 		
 		
-		String query = "SELECT * FROM properties.property where city = ? AND typeOfProperty = ? AND propertyClassification=?";
+		String query = "SELECT * FROM properties.property where city = ? AND typeOfProperty = ? AND propertyClassification=? AND availabilityStatus = 'AVAILABLE' ORDER BY dateTime DESC, clickCount DESC;";
+		String query1 = "SELECT * FROM properties.property WHERE availabilityStatus = 'AVAILABLE' ORDER BY dateTime DESC, clickCount DESC;";
 		try {
 			pstmt = conn.prepareStatement(query);
 			
@@ -187,37 +190,82 @@ public List<Property> searchProperty(String request, String request1, String req
 			
 			ResultSet rs = pstmt.executeQuery();
 			
-			while (rs.next()) {
-				
-				Property p = new Property();
-				
-				p.setPropertyID(rs.getInt("propertyID"));
-				p.setCity(rs.getString("city"));
-				p.setTypeOfProperty(rs.getString("typeOfProperty"));
-				p.setPropertyClassification(rs.getString("propertyClassification"));
-				p.setSellingPrice(rs.getDouble("sellingPrice"));
-				p.setBedroomCount(rs.getInt("bedroomCount"));
-				p.setBathroomCount(rs.getInt("bathroomCount"));
-				p.setAmenities(rs.getString("amenities"));
-				p.setNoOfGarage(rs.getInt("noOfGarage"));
-				p.setGarageSize(rs.getDouble("garageSize"));
-				p.setYearBuilt(rs.getString("yearBuilt"));
-				p.setBasement(rs.getInt("basement"));
-				p.setBasementDescription(rs.getString("basementDescription"));
-				p.setRoofingDescription(rs.getString("roofingDescription"));
-				p.setAdditionalRemarks(rs.getString("additionalRemarks"));
-				p.setAvailabilityStatus(rs.getString("availabilityStatus"));
-				p.setNameOfDeveloper(rs.getString("nameOfDeveloper"));
-				p.setNameOfProject(rs.getString("nameOfProject"));
-				p.setDateTime(rs.getString("dateTime"));
-				p.setAddress(rs.getString("address"));
-				p.setCountry(rs.getString("country"));
-				p.setZipCode(rs.getString("zipCode"));
-				p.setClickCount(rs.getInt("clickCount"));
-				p.setTotalArea(rs.getDouble("totalArea"));
-				
-				propertylist.add(p);
+			if(!request.isEmpty())
+			{
+				System.out.println("hello");
+				while (rs.next()) {
+					
+					Property p = new Property();
+					
+					p.setPropertyID(rs.getInt("propertyID"));
+					p.setCity(rs.getString("city"));
+					p.setTypeOfProperty(rs.getString("typeOfProperty"));
+					p.setPropertyClassification(rs.getString("propertyClassification"));
+					p.setSellingPrice(rs.getDouble("sellingPrice"));
+					p.setBedroomCount(rs.getInt("bedroomCount"));
+					p.setBathroomCount(rs.getInt("bathroomCount"));
+					p.setAmenities(rs.getString("amenities"));
+					p.setNoOfGarage(rs.getInt("noOfGarage"));
+					p.setGarageSize(rs.getDouble("garageSize"));
+					p.setYearBuilt(rs.getString("yearBuilt"));
+					p.setBasement(rs.getInt("basement"));
+					p.setBasementDescription(rs.getString("basementDescription"));
+					p.setRoofingDescription(rs.getString("roofingDescription"));
+					p.setAdditionalRemarks(rs.getString("additionalRemarks"));
+					p.setAvailabilityStatus(rs.getString("availabilityStatus"));
+					p.setNameOfDeveloper(rs.getString("nameOfDeveloper"));
+					p.setNameOfProject(rs.getString("nameOfProject"));
+					p.setDateTime(rs.getString("dateTime"));
+					p.setAddress(rs.getString("address"));
+					p.setCountry(rs.getString("country"));
+					p.setZipCode(rs.getString("zipCode"));
+					p.setClickCount(rs.getInt("clickCount"));
+					p.setTotalArea(rs.getDouble("totalArea"));
+					
+					propertylist.add(p);
+				}
 			}
+			else if(request.isEmpty()) {
+				//print all
+				System.out.println("must print pls!");
+				Statement s = conn.createStatement();
+				ResultSet myRs = s.executeQuery(query1);
+			
+				while(myRs.next()) {
+					
+					Property p = new Property();
+					System.out.println("hi");
+					p.setPropertyID(myRs.getInt("propertyID"));
+					p.setCity(myRs.getString("city"));
+					p.setTypeOfProperty(myRs.getString("typeOfProperty"));
+					p.setPropertyClassification(myRs.getString("propertyClassification"));
+					p.setSellingPrice(myRs.getDouble("sellingPrice"));
+					p.setBedroomCount(myRs.getInt("bedroomCount"));
+					p.setBathroomCount(myRs.getInt("bathroomCount"));
+					p.setAmenities(myRs.getString("amenities"));
+					p.setNoOfGarage(myRs.getInt("noOfGarage"));
+					p.setGarageSize(myRs.getDouble("garageSize"));
+					p.setYearBuilt(myRs.getString("yearBuilt"));
+					p.setBasement(myRs.getInt("basement"));
+					p.setBasementDescription(myRs.getString("basementDescription"));
+					p.setRoofingDescription(myRs.getString("roofingDescription"));
+					p.setAdditionalRemarks(myRs.getString("additionalRemarks"));
+					p.setAvailabilityStatus(myRs.getString("availabilityStatus"));
+					p.setNameOfDeveloper(myRs.getString("nameOfDeveloper"));
+					p.setNameOfProject(myRs.getString("nameOfProject"));
+					p.setDateTime(myRs.getString("dateTime"));
+					p.setAddress(myRs.getString("address"));
+					p.setCountry(myRs.getString("country"));
+					p.setZipCode(myRs.getString("zipCode"));
+					p.setClickCount(myRs.getInt("clickCount"));
+					p.setTotalArea(myRs.getDouble("totalArea"));
+					
+					propertylist.add(p);
+				}
+				
+			}
+			
+			
 		} catch (Exception e) {
 		}finally {
 			DBProperty.closeConnection(conn, pstmt);
