@@ -288,36 +288,35 @@ public List<Property> searchProperty(String request, String request1, String req
 		return p;
 	}
 	
-	public List<Property> filterProperty(Map<String,Object> request)  {
+	public List<Property> filterProperty(String frequest, int frequest1, int frequest2, int frequest3, double frequest4, String frequest5, int frequest6, int frequest7, double frequest8 ){
 		List<Property> propertyList = new ArrayList<Property>();
 		Connection myConn = DBProperty.getConnection();
 		PreparedStatement fpstmt = null;
 		
-		String filter = "SELECT * FROM properties.property WHERE typeOfProperty = ? AND sellingPrice > ? AND bedroomCount =? AND bathroomCount = ? AND noOfGarage = ? AND garageSize = ? AND yearBuilt = ? AND basement = ? AND totalArea = ? ";
+		String filter = "SELECT * FROM properties.property WHERE typeOfProperty = ? AND sellingPrice > ? AND bedroomCount = ? AND bathroomCount = ? AND noOfGarage = ? AND garageSize = ? AND yearBuilt = ? AND basement = ? AND totalArea = ? ";
 		//String filter = "SELECT * FROM properties.property WHERE amenities LIKE ? ";
 
-		for (int i=0; i < Integer.parseInt(request.get("size").toString()); i++) {
-			filter += "AND amenities LIKE ?"; 
-		}
+	//	for (int i=0; i < Integer.parseInt(frequest.get("size").toString()); i++) {
+	//		filter += "AND amenities LIKE ?"; 
+	//	}
 		
 		try {
 			fpstmt = myConn.prepareStatement(filter);
 			
 			
-			fpstmt.setString(1, request.get("typeOfProperty").toString());
-			fpstmt.setDouble(2, Double.parseDouble(request.get("sellingPrice").toString()));
-			fpstmt.setInt(3, Integer.parseInt(request.get("bedroomCount").toString()));
-			fpstmt.setInt(4, Integer.parseInt(request.get("bathroomCount").toString()));
-			fpstmt.setInt(5, Integer.parseInt(request.get("noOfGarage").toString()));
-			fpstmt.setDouble(6, Double.parseDouble(request.get("garageSize").toString()));
-			fpstmt.setString(7,(request.get("yearBuilt").toString()));
-			fpstmt.setInt(8, Integer.parseInt(request.get("basement").toString()));
-			fpstmt.setDouble(9, Double.parseDouble(request.get("totalArea").toString()));
-			for (int i=10; i <= Integer.parseInt(request.get("size").toString())+9; i++) {
-				fpstmt.setString(i, "%" + request.get("amenities"+i).toString() + "%");
-			}
+			fpstmt.setString(1, frequest);
+			fpstmt.setInt(2, frequest1 );
+			fpstmt.setInt(3, frequest2);
+			fpstmt.setInt(4, frequest3);
+			fpstmt.setDouble(5, frequest4);
+			fpstmt.setString(6, frequest5);
+			fpstmt.setInt(7, frequest6);
+			fpstmt.setInt(8, frequest7);
+			fpstmt.setDouble(9, frequest8);
+			//for (int i=10; i <= Integer.parseInt(request.get("size").toString())+9; i++) {
+			//	fpstmt.setString(i, "%" + request.get("amenities"+i).toString() + "%");
+			//}
 			ResultSet rs = fpstmt.executeQuery();
-			
 			
 			while (rs.next()) {
 				Property p = new Property();
