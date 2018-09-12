@@ -1,5 +1,6 @@
 package com.ibm.bootcamp.property_management;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -36,5 +37,11 @@ public class PropertyManagement {
 	public Property viewProperty(@RequestParam(value = "propertyID") int propertyID) {
 		
 		return PropertyDAO.viewProperty(propertyID);
+	}
+	
+	@RequestMapping("/viewMyProperties")
+	public List<Property> viewMyProperties(@RequestParam(value= "userID") int request) {
+		
+		return PropertyDAO.viewMyProperties(request);
 	}
 }

@@ -341,22 +341,29 @@ public class PropertyDAO {
 		Connection myConn = DBProperty.getConnection();
 		PreparedStatement fpstmt = null;
 		
-		String filter ="SELECT * FROM properties.property WHERE typeOfProperty = ? AND amenities LIKE ? AND sellingPrice > ? AND bedroomCount = ? AND bathroomCount = ? AND noOfGarage = ? AND garageSize = ? AND yearBuilt = ? AND basement = ? AND totalArea = ? ";
+		String filter = "SELECT * FROM properties.property WHERE typeOfProperty = ? AND sellingPrice > ? AND bedroomCount =? AND bathroomCount = ? AND noOfGarage = ? AND garageSize = ? AND yearBuilt = ? AND basement = ? AND totalArea = ? ";
+		//String filter = "SELECT * FROM properties.property WHERE amenities LIKE ? ";
+
+		for (int i=0; i < Integer.parseInt(request.get("size").toString()); i++) {
+			filter += "AND amenities LIKE ?"; 
+		}
 		
 		try {
 			fpstmt = myConn.prepareStatement(filter);
 			
-			fpstmt.setString(1, request.get("typeOfProperty").toString());
-			fpstmt.setString(2, "%" + request.get("amenities").toString() + "%");
-			fpstmt.setDouble(3, Double.parseDouble(request.get("sellingPrice").toString()));
-			fpstmt.setInt(4, Integer.parseInt(request.get("bedroomCount").toString()));
-			fpstmt.setInt(5, Integer.parseInt(request.get("bathroomCount").toString()));
-			fpstmt.setInt(6, Integer.parseInt(request.get("noOfGarage").toString()));
-			fpstmt.setDouble(7, Double.parseDouble(request.get("garageSize").toString()));
-			fpstmt.setString(8,(request.get("yearBuilt").toString()));
-			fpstmt.setInt(9, Integer.parseInt(request.get("basement").toString()));
-			fpstmt.setDouble(10, Double.parseDouble(request.get("totalArea").toString()));
 			
+			fpstmt.setString(1, request.get("typeOfProperty").toString());
+			fpstmt.setDouble(2, Double.parseDouble(request.get("sellingPrice").toString()));
+			fpstmt.setInt(3, Integer.parseInt(request.get("bedroomCount").toString()));
+			fpstmt.setInt(4, Integer.parseInt(request.get("bathroomCount").toString()));
+			fpstmt.setInt(5, Integer.parseInt(request.get("noOfGarage").toString()));
+			fpstmt.setDouble(6, Double.parseDouble(request.get("garageSize").toString()));
+			fpstmt.setString(7,(request.get("yearBuilt").toString()));
+			fpstmt.setInt(8, Integer.parseInt(request.get("basement").toString()));
+			fpstmt.setDouble(9, Double.parseDouble(request.get("totalArea").toString()));
+			for (int i=10; i <= Integer.parseInt(request.get("size").toString())+9; i++) {
+				fpstmt.setString(i, "%" + request.get("amenities"+i).toString() + "%");
+			}
 			ResultSet rs = fpstmt.executeQuery();
 			
 			
@@ -383,8 +390,65 @@ public class PropertyDAO {
 			DBProperty.closeConnection(myConn, fpstmt);
 		}
 
-		return propertyList; //sent to 1st
+		return propertyList; 
 	}
 	
-
+	public List<Property> viewMyProperties(int request){
+		
+		List<Property> propertylist = new ArrayList<Property>();
+		
+		Connection conn = DBProperty.getConnection();
+		PreparedStatement pstmt = null;
+		
+		
+		
+		String query = "SELECT * FROM properties.property where userID = ?";
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setInt(1, request);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				
+				Property p = new Property();
+				
+				p.setPropertyID(rs.getInt("propertyID"));
+				p.setCity(rs.getString("city"));
+				p.setTypeOfProperty(rs.getString("typeOfProperty"));
+				p.setPropertyClassification(rs.getString("propertyClassification"));
+				p.setSellingPrice(rs.getDouble("sellingPrice"));
+				p.setBedroomCount(rs.getInt("bedroomCount"));
+				p.setBathroomCount(rs.getInt("bathroomCount"));
+				p.setAmenities(rs.getString("amenities"));
+				p.setNoOfGarage(rs.getInt("noOfGarage"));
+				p.setGarageSize(rs.getDouble("garageSize"));
+				p.setYearBuilt(rs.getString("yearBuilt"));
+				p.setBasement(rs.getInt("basement"));
+				p.setBasementDescription(rs.getString("basementDescription"));
+				p.setRoofingDescription(rs.getString("roofingDescription"));
+				p.setAdditionalRemarks(rs.getString("additionalRemarks"));
+				p.setAvailabilityStatus(rs.getString("availabilityStatus"));
+				p.setNameOfDeveloper(rs.getString("nameOfDeveloper"));
+				p.setNameOfProject(rs.getString("nameOfProject"));
+				p.setDateTime(rs.getString("dateTime"));
+				p.setAddress(rs.getString("address"));
+				p.setCountry(rs.getString("country"));
+				p.setZipCode(rs.getString("zipCode"));
+				p.setClickCount(rs.getInt("clickCount"));
+				p.setTotalArea(rs.getDouble("totalArea"));
+				
+				propertylist.add(p);
+			}
+		} catch (Exception e) {
+		}finally {
+			DBProperty.closeConnection(conn, pstmt);
+		}	
+		
+		return propertylist;
+		
+	}
+	
+	
 }
