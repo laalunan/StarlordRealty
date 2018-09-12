@@ -168,27 +168,29 @@ public class PropertyDAO {
 
 	}
 
-	public List<Property> searchProperty(Map<String, Object> request) {
-
+public List<Property> searchProperty(String request, String request1, String request2){
+		
 		List<Property> propertylist = new ArrayList<Property>();
-
+		
 		Connection conn = DBProperty.getConnection();
 		PreparedStatement pstmt = null;
-
-		String query = "SELECT * FROM properties.property where city = ? or typeOfProperty = ? or propertyClassification = ?";
+		
+		
+		
+		String query = "SELECT * FROM properties.property where city = ? AND typeOfProperty = ? AND propertyClassification=?";
 		try {
 			pstmt = conn.prepareStatement(query);
-
-			pstmt.setString(1, request.get("city").toString());
-			pstmt.setString(2, request.get("typeOfProperty").toString());
-			pstmt.setString(3, request.get("propertyClassification").toString());
-
+			
+			pstmt.setString(1, request);
+			pstmt.setString(2, request1);
+			pstmt.setString(3, request2);
+			
 			ResultSet rs = pstmt.executeQuery();
-
+			
 			while (rs.next()) {
-
+				
 				Property p = new Property();
-
+				
 				p.setPropertyID(rs.getInt("propertyID"));
 				p.setCity(rs.getString("city"));
 				p.setTypeOfProperty(rs.getString("typeOfProperty"));
@@ -213,18 +215,17 @@ public class PropertyDAO {
 				p.setZipCode(rs.getString("zipCode"));
 				p.setClickCount(rs.getInt("clickCount"));
 				p.setTotalArea(rs.getDouble("totalArea"));
-
+				
 				propertylist.add(p);
 			}
 		} catch (Exception e) {
-		} finally {
+		}finally {
 			DBProperty.closeConnection(conn, pstmt);
-		}
-
+		}	
+		
 		return propertylist;
-
+		
 	}
-
 	public Property viewProperty(int propertyID) {
 		Connection conn = DBProperty.getConnection();
 		PreparedStatement pstmt = null;
