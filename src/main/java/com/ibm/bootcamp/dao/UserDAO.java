@@ -57,8 +57,6 @@ public class UserDAO {
 			pstmt.setString(j++, register.get("lastName").toString());
 			pstmt.setString(j++, register.get("userType").toString());
 			pstmt.setInt(j++, Integer.parseInt(register.get("accountStatus").toString()));
-			//pstmt.setInt(j++, Integer.parseInt(register.get("authenticationStatus").toString()));
-			
 
 			pstmt.executeUpdate();
 			response ="Successfully registered!";
