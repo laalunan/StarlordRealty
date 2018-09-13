@@ -23,7 +23,7 @@ public class PropertyDAO {
 		Connection conn = DBProperty.getConnection();
 		PreparedStatement pstmt = null;
 
-		String query = "UPDATE property SET typeOfProperty = ?, sellingPrice = ?, propertyClassification = ?, totalArea = ?, bedroomCount = ?, bathroomCount = ?, amenities = ?, noOfGarage = ?, garageSize = ?, yearBuilt = ?, basement = ?, basementDescription = ?, roofingDescription = ?, additionalRemarks = ?, availabilityStatus = ?, nameOfDeveloper = ?, nameOfProject = ?, userID = ?, datetime = ?, address = ?, city = ?, country = ?, zipCode = ? WHERE propertyID = ?";
+		String query = "UPDATE property SET typeOfProperty = ?, sellingPrice = ?, propertyClassification = ?, totalArea = ?, bedroomCount = ?, bathroomCount = ?, amenities = ?, noOfGarage = ?, garageSize = ?, yearBuilt = ?, basement = ?, basementDescription = ?, roofingDescription = ?, additionalRemarks = ?, availabilityStatus = ?, nameOfDeveloper = ?, nameOfProject = ?, datetime = ?, address = ?, city = ?, country = ?, zipCode = ? WHERE propertyID = ?";
 		String result = "";
 		try {
 			conn = DBProperty.getConnection();
@@ -49,7 +49,6 @@ public class PropertyDAO {
 				pstmt.setString(i++, request.get("availabilityStatus").toString());
 				pstmt.setString(i++, request.get("nameOfDeveloper").toString());
 				pstmt.setString(i++, request.get("nameOfProject").toString());
-				pstmt.setInt(i++, Integer.parseInt(request.get("userID").toString()));
 				pstmt.setString(i++, request.get("datetime").toString());
 				pstmt.setString(i++, request.get("address").toString());
 				pstmt.setString(i++, request.get("city").toString());
