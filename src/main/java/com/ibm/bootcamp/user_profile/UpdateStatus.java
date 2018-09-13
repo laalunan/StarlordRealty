@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin
 @RestController
 public class UpdateStatus {
-	
+	  
 	private com.ibm.bootcamp.dao.UserDAO UserDAO = new com.ibm.bootcamp.dao.UserDAO();
 
 	@PostMapping("/updatestatus")

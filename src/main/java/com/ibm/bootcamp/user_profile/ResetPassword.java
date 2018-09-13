@@ -15,7 +15,8 @@ public class ResetPassword {
 
 	@PostMapping("/resetpassword")
 	public String resetPassword(@RequestBody Map<String, Object> request) {
-			
+		 	
 		return UserDAO.resetPassword(request);
 }
 }
+    

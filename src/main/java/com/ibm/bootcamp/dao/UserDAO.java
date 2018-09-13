@@ -40,7 +40,7 @@ public class UserDAO {
 		    
 		if (rs.next() && conn!=null) { 
 			response = "User already exists!";
-			
+			      
 		}else {	
 		
 			String rawPass = register.get("password").toString();

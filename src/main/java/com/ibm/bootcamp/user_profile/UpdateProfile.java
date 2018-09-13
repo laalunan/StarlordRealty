@@ -17,7 +17,7 @@ public class UpdateProfile {
 	
 	@PostMapping("/updateprofile")
 	public String updateProfile(@RequestBody Map<String, Object> request) {
-			
+	  		
 		return UserDAO.updateProfile(request);
 }
 }
