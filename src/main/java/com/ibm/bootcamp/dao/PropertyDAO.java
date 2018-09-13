@@ -345,7 +345,7 @@ public class PropertyDAO {
 		if (frequest2.equals("")) {bedroom = "bedroomCount LIKE ";} else {bedroom = "bedroomCount = ";}
 		if (frequest3.equals("")) {bathroom = "bathroomCount LIKE ";} else {bathroom = "bathroomCount = ";}
 		if (frequest4.equals("")) {noOfGarage = "noOfGarage LIKE ";} else {noOfGarage = "noOfGarage = ";}
-		if (frequest5.equals("")) {garageSize = "garageSize LIKE ";} else {garageSize = "noOfGarage = ";}
+		if (frequest5.equals("")) {garageSize = "garageSize LIKE ";} else {garageSize = "garageSize = ";}
 		if (frequest6.equals("")) {yearBuilt = "yearBuilt LIKE ";} else {yearBuilt = "yearBuilt = ";}
 		if (frequest8.equals("")) {totalArea = "totalArea LIKE ";} else {totalArea = "totalArea = ";}
 		System.out.println(frequest9);
