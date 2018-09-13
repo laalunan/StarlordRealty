@@ -335,34 +335,105 @@ public class PropertyDAO {
 		return p;
 	}
 	
-	public List<Property> filterProperty(String frequest, int frequest1, int frequest2, int frequest3, double frequest4, String frequest5, int frequest6, int frequest7, double frequest8 ){
+	public List<Property> filterProperty(String frequest, int min, int max, String frequest2, String frequest3, String frequest4, String frequest5, String frequest6, int frequest7, String frequest8, String frequest9, int size){
 		List<Property> propertyList = new ArrayList<Property>();
+		List<String> amenities = new ArrayList<String>();
 		Connection myConn = DBProperty.getConnection();
 		PreparedStatement fpstmt = null;
+		String type = "", bedroom = "", bathroom = "", noOfGarage ="",garageSize="",yearBuilt="",totalArea="";
+		if (frequest.equals("Any")) {type = "typeOfProperty LIKE ";} else {type = "typeOfProperty = ";}
+		if (frequest2.equals("")) {bedroom = "bedroomCount LIKE ";} else {bedroom = "bedroomCount = ";}
+		if (frequest3.equals("")) {bathroom = "bathroomCount LIKE ";} else {bathroom = "bathroomCount = ";}
+		if (frequest4.equals("")) {noOfGarage = "noOfGarage LIKE ";} else {noOfGarage = "noOfGarage = ";}
+		if (frequest5.equals("")) {garageSize = "garageSize LIKE ";} else {garageSize = "noOfGarage = ";}
+		if (frequest6.equals("")) {yearBuilt = "yearBuilt LIKE ";} else {yearBuilt = "yearBuilt = ";}
+		if (frequest8.equals("")) {totalArea = "totalArea LIKE ";} else {totalArea = "totalArea = ";}
+		System.out.println(frequest9);
+		String filter = "SELECT * FROM properties.property WHERE " + type + "? AND sellingPrice >= ? AND sellingPrice <= ? AND "+bedroom+"? AND "+bathroom+" ? AND "+noOfGarage+" ?  AND "+garageSize+" ? AND "+yearBuilt+" ? AND basement = ? AND "+totalArea+" ? AND amenities LIKE ?";
 		
-		String filter = "SELECT * FROM properties.property WHERE typeOfProperty = ? AND sellingPrice > ? AND bedroomCount = ? AND bathroomCount = ? AND noOfGarage = ? AND garageSize = ? AND yearBuilt = ? AND basement = ? AND totalArea = ? ";
-		//String filter = "SELECT * FROM properties.property WHERE amenities LIKE ? ";
-
-	//	for (int i=0; i < Integer.parseInt(frequest.get("size").toString()); i++) {
-	//		filter += "AND amenities LIKE ?"; 
-	//	}
+		
+		for (int i=0; i < size-1; i++) {
+			filter += "AND amenities LIKE ?"; 
+		}
 		
 		try {
 			fpstmt = myConn.prepareStatement(filter);
-			
-			
-			fpstmt.setString(1, frequest);
-			fpstmt.setInt(2, frequest1 );
-			fpstmt.setInt(3, frequest2);
-			fpstmt.setInt(4, frequest3);
-			fpstmt.setDouble(5, frequest4);
-			fpstmt.setString(6, frequest5);
-			fpstmt.setInt(7, frequest6);
-			fpstmt.setInt(8, frequest7);
-			fpstmt.setDouble(9, frequest8);
-			//for (int i=10; i <= Integer.parseInt(request.get("size").toString())+9; i++) {
-			//	fpstmt.setString(i, "%" + request.get("amenities"+i).toString() + "%");
-			//}
+			if (frequest.equals("Any")) {
+				fpstmt.setString(1, "%");
+			} else {
+				fpstmt.setString(1, frequest);
+			}
+			fpstmt.setInt(2, min);
+			fpstmt.setInt(3, max);
+			if (frequest2.equals("")) {	//bedroom
+				fpstmt.setString(4, "%");
+			} else {
+				fpstmt.setString(4, frequest2);
+			}
+			//fpstmt.setInt(5, frequest3);
+			if (frequest3.equals("")) { //bathroom
+				fpstmt.setString(5, "%");
+			} else {
+				fpstmt.setString(5, frequest3);
+			}
+			//fpstmt.setDouble(6, frequest4); no of garage
+			if (frequest4.equals("")) {
+				fpstmt.setString(6, "%");
+			} else {
+				fpstmt.setString(6, frequest4);
+			}
+			//fpstmt.setString(7, frequest5);garageSize
+			if (frequest5.equals("")) { 
+				fpstmt.setString(7, "%");
+			} else {
+				fpstmt.setString(7, frequest5);
+			}
+			//fpstmt.setInt(8, frequest6); yearBuilt
+			if (frequest6.equals("")) { 
+				fpstmt.setString(8, "%");
+			} else {
+				fpstmt.setString(8, frequest6);
+			}
+			fpstmt.setInt(9, frequest7);
+			//fpstmt.setDouble(10, frequest8);totalArea
+			if (frequest8.equals("")) { 
+				fpstmt.setString(10, "%");
+			} else {
+				fpstmt.setString(10, frequest8);
+			}
+			if (frequest9.contains("Attic")) {amenities.add("Attic");}
+			if (frequest9.contains("Wine cellar")) {amenities.add("Wine cellar");}
+			if (frequest9.contains("Fire Place")) {amenities.add("Fire Place");}
+			if (frequest9.contains("Backyard")) {amenities.add("Backyard");}
+			if (frequest9.contains("Sprinklers")) {amenities.add("Sprinklers");}
+			if (frequest9.contains("Laundry")) {amenities.add("Laundry");}
+			if (frequest9.contains("Private space")) {amenities.add("Private space");}
+			if (frequest9.contains("Gas heat")) {amenities.add("Gas heat");}
+			if (frequest9.contains("Basketball court")) {amenities.add("Basketball court");}
+			if (frequest9.contains("Lake view")) {amenities.add("Lake view");}
+			if (frequest9.contains("Front yard")) {amenities.add("Front yard");}
+			if (frequest9.contains("Washer and dryer")) {amenities.add("Washer and dryer");}
+			if (frequest9.contains("Concierge")) {amenities.add("Concierge");}
+			if (frequest9.contains("Storage")) {amenities.add("Storage");}
+			if (frequest9.contains("Ocean view")) {amenities.add("Ocean view");}
+			if (frequest9.contains("Gym")) {amenities.add("Gym");}
+			if (frequest9.contains("Pet pound")) {amenities.add("Pet pound");}
+			if (frequest9.contains("Pool")) {amenities.add("Pool");}
+			if (frequest9.contains("Fenced yard")) {amenities.add("Fenced yard");}
+			if (frequest9.contains("Deck")) {amenities.add("Deck");}
+			if (frequest9.contains("Balcony")) {amenities.add("Balcony");}
+			if (frequest9.contains("Doorman")) {amenities.add("Doorman");}
+			if (frequest9.contains("Recreation area")) {amenities.add("Recreation area");}
+			int j =0;
+			if (size > 0) {
+			for (int i=11; i < amenities.size()+11; i++) {
+				fpstmt.setString(i, "%" + amenities.get(j) + "%");
+				j++;
+			}
+			}
+			if (size==0) {
+				fpstmt.setString(11, "%");
+			}
 			ResultSet rs = fpstmt.executeQuery();
 			
 			while (rs.next()) {
