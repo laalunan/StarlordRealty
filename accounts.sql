@@ -57,11 +57,13 @@ DROP TABLE IF EXISTS `broker_salesagent`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `broker_salesagent` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `brokerID` int(11) DEFAULT NULL,
   `salesAgentID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
   KEY `FK1_idx` (`brokerID`),
   CONSTRAINT `FK1` FOREIGN KEY (`brokerID`) REFERENCES `accounts` (`accountid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,6 +72,7 @@ CREATE TABLE `broker_salesagent` (
 
 LOCK TABLES `broker_salesagent` WRITE;
 /*!40000 ALTER TABLE `broker_salesagent` DISABLE KEYS */;
+INSERT INTO `broker_salesagent` VALUES (1,1,4),(2,1,5),(3,1,8),(4,1,10);
 /*!40000 ALTER TABLE `broker_salesagent` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -82,4 +85,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-13 14:25:40
+-- Dump completed on 2018-09-13 14:53:45
