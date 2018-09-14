@@ -520,4 +520,76 @@ public class PropertyDAO {
 	}
 	
 	
+	public List<Property> compareProperty(int propertyID, int propertyID2) {
+		Connection conn = DBProperty.getConnection();
+		PreparedStatement pstmt = null;
+		String query = "SELECT * FROM property WHERE propertyID = ? OR propertyID = ?";
+		
+		ResultSet rs = null;
+		List<Property> two = new ArrayList<Property>();
+		try {
+
+			if (conn != null) {
+				int i = 1;
+
+				pstmt = conn.prepareStatement(query);
+				pstmt.setInt(i++, propertyID);
+				pstmt.setInt(i++, propertyID2);
+				rs = pstmt.executeQuery();
+
+				while (rs.next()) {
+					Property p = new Property();
+					p.setPropertyID(rs.getInt("propertyID"));
+					p.setTypeOfProperty(rs.getString("typeOfProperty"));
+					p.setSellingPrice(rs.getDouble("sellingPrice"));
+					p.setPropertyClassification(rs.getString("propertyClassification"));
+					p.setTotalArea(rs.getDouble("totalArea"));
+					p.setBedroomCount(rs.getInt("bedroomCount"));
+					p.setBathroomCount(rs.getInt("bathroomCount"));
+					p.setAmenities(rs.getString("amenities"));
+					p.setNoOfGarage(rs.getInt("noOfGarage"));
+					p.setGarageSize(rs.getDouble("garageSize"));
+					p.setYearBuilt(rs.getString("yearBuilt"));
+					p.setBasement(rs.getInt("basement"));
+					p.setBasementDescription(rs.getString("basementDescription"));
+					p.setRoofingDescription(rs.getString("roofingDescription"));
+					p.setAdditionalRemarks(rs.getString("additionalRemarks"));
+					p.setAvailabilityStatus(rs.getString("availabilityStatus"));
+					p.setNameOfDeveloper(rs.getString("nameOfDeveloper"));
+					p.setNameOfProject(rs.getString("nameOfProject"));
+					p.setUserID(rs.getInt("userID"));
+					p.setDateTime(rs.getString("dateTime"));
+					p.setAddress(rs.getString("address"));
+					p.setCity(rs.getString("city"));
+					p.setCountry(rs.getString("country"));
+					p.setZipCode(rs.getString("zipCode"));
+					p.setClickCount(rs.getInt("clickCount"));
+					two.add(p);
+				}
+
+				query = "UPDATE property SET clickCount = (SELECT clickCount WHERE propertyID = ?)+1 WHERE propertyID = ?";
+				String query1 = "UPDATE property SET clickCount = (SELECT clickCount WHERE propertyID = ?)+1 WHERE propertyID = ?";
+
+				int j = 1;
+				int k = 1;
+				pstmt = conn.prepareStatement(query);
+				pstmt.setInt(j++, propertyID);
+				pstmt.setInt(j++, propertyID);
+				int s = pstmt.executeUpdate();
+				
+				pstmt = conn.prepareStatement(query1);
+				pstmt.setInt(k++, propertyID);
+				pstmt.setInt(k++, propertyID);
+				int t = pstmt.executeUpdate();
+			}
+
+		} catch (SQLException ex) {
+			Logger.getLogger(PropertyDAO.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			DBProperty.closeConnection(conn, pstmt);
+		}
+		return two;
+	}
+	
+	
 }
