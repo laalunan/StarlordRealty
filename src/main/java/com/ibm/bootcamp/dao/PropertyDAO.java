@@ -340,7 +340,7 @@ public class PropertyDAO {
 		List<String> amenities = new ArrayList<String>();
 		Connection myConn = DBProperty.getConnection();
 		PreparedStatement fpstmt = null;
-		String type = "", bedroom = "", bathroom = "", noOfGarage ="",garageSize="",yearBuilt="",totalArea="";
+		String type = "", bedroom = "", bathroom = "", noOfGarage ="", garageSize="", yearBuilt="",totalArea="";
 		if (frequest.equals("Any")) {type = "typeOfProperty LIKE ";} else {type = "typeOfProperty = ";}
 		if (frequest2.equals("")) {bedroom = "bedroomCount LIKE ";} else {bedroom = "bedroomCount = ";}
 		if (frequest3.equals("")) {bathroom = "bathroomCount LIKE ";} else {bathroom = "bathroomCount = ";}
@@ -348,8 +348,8 @@ public class PropertyDAO {
 		if (frequest5.equals("")) {garageSize = "garageSize LIKE ";} else {garageSize = "garageSize = ";}
 		if (frequest6.equals("")) {yearBuilt = "yearBuilt LIKE ";} else {yearBuilt = "yearBuilt = ";}
 		if (frequest8.equals("")) {totalArea = "totalArea LIKE ";} else {totalArea = "totalArea = ";}
-		System.out.println(frequest9);
-		String filter = "SELECT * FROM properties.property WHERE " + type + "? AND sellingPrice >= ? AND sellingPrice <= ? AND "+bedroom+"? AND "+bathroom+" ? AND "+noOfGarage+" ?  AND "+garageSize+" ? AND "+yearBuilt+" ? AND basement = ? AND "+totalArea+" ? AND amenities LIKE ?";
+		
+		String filter = "SELECT * FROM properties.property WHERE " + type + "? AND sellingPrice >= ? AND sellingPrice <= ? AND "+bedroom+"? AND "+bathroom+" ? AND "+noOfGarage+" ?  AND "+garageSize+" ? AND "+yearBuilt+" ? AND basement = ? AND "+totalArea+" ? AND amenities LIKE ?  ORDER BY dateTime DESC, clickCount DESC";
 		
 		
 		for (int i=0; i < size-1; i++) {
@@ -438,16 +438,31 @@ public class PropertyDAO {
 			
 			while (rs.next()) {
 				Property p = new Property();
+				p.setPropertyID(rs.getInt("propertyID"));
 				p.setTypeOfProperty(rs.getString("typeOfProperty"));
 				p.setSellingPrice(rs.getDouble("sellingPrice"));
-				p.setAmenities(rs.getString("amenities"));
+				p.setPropertyClassification(rs.getString("propertyClassification"));
+				p.setTotalArea(rs.getDouble("totalArea"));
 				p.setBedroomCount(rs.getInt("bedroomCount"));
 				p.setBathroomCount(rs.getInt("bathroomCount"));
+				p.setAmenities(rs.getString("amenities"));
 				p.setNoOfGarage(rs.getInt("noOfGarage"));
-				p.setGarageSize(rs.getInt("garageSize"));
+				p.setGarageSize(rs.getDouble("garageSize"));
 				p.setYearBuilt(rs.getString("yearBuilt"));
 				p.setBasement(rs.getInt("basement"));
-				p.setTotalArea(rs.getDouble("totalArea"));
+				p.setBasementDescription(rs.getString("basementDescription"));
+				p.setRoofingDescription(rs.getString("roofingDescription"));
+				p.setAdditionalRemarks(rs.getString("additionalRemarks"));
+				p.setAvailabilityStatus(rs.getString("availabilityStatus"));
+				p.setNameOfDeveloper(rs.getString("nameOfDeveloper"));
+				p.setNameOfProject(rs.getString("nameOfProject"));
+				p.setUserID(rs.getInt("userID"));
+				p.setDateTime(rs.getString("dateTime"));
+				p.setAddress(rs.getString("address"));
+				p.setCity(rs.getString("city"));
+				p.setCountry(rs.getString("country"));
+				p.setZipCode(rs.getString("zipCode"));
+				p.setClickCount(rs.getInt("clickCount"));
 
 				propertyList.add(p);
 			}
