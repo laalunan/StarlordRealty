@@ -3,6 +3,8 @@ package com.ibm.bootcamp.property_management;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,8 +28,8 @@ public class PropertyManagement {
 	}
 	
 	@PostMapping(value = "/postProperty")
-	public String insertProperty(@RequestBody Map<String, Object> request) {
-		String word = PropertyDAO.insertProperty(request);
+	public String insertProperty(@RequestBody Map<String, Object> request, HttpSession session) {
+		String word = PropertyDAO.insertProperty(request, Integer.parseInt(session.getAttribute("userID").toString()));
 
 		return word;
 		

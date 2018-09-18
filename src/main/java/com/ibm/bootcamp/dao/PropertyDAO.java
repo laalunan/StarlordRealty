@@ -72,7 +72,7 @@ public class PropertyDAO {
 		return result;
 	}
 
-	public String insertProperty(Map<String, Object> request) {
+	public String insertProperty(Map<String, Object> request, int userID) {
 		Connection conn = DBProperty.getConnection();
 
 		PreparedStatement pstmt = null;
@@ -103,7 +103,7 @@ public class PropertyDAO {
 			pstmt.setString(14, request.get("availabilityStatus").toString());
 			pstmt.setString(15, request.get("nameOfDeveloper").toString());
 			pstmt.setString(16, request.get("nameOfProject").toString());
-			pstmt.setInt(17, Integer.parseInt(request.get("userID").toString()));
+			pstmt.setInt(17, userID);
 			pstmt.setString(18, sdf.format(dt));
 			pstmt.setString(19, request.get("address").toString());
 			pstmt.setString(20, request.get("city").toString());
