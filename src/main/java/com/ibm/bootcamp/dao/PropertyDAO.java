@@ -335,21 +335,20 @@ public class PropertyDAO {
 		return p;
 	}
 	
-	public List<Property> filterProperty(String frequest, int min, int max, String frequest2, String frequest3, String frequest4, String frequest5, String frequest6, int frequest7, String frequest8, String frequest9, int size){
+	public List<Property> filterProperty(int min, int max, String frequest2, String frequest3, String frequest4, String frequest5, String frequest6, int frequest7, String frequest8, String frequest9, int size){
 		List<Property> propertyList = new ArrayList<Property>();
 		List<String> amenities = new ArrayList<String>();
 		Connection myConn = DBProperty.getConnection();
 		PreparedStatement fpstmt = null;
-		String type = "", bedroom = "", bathroom = "", noOfGarage ="",garageSize="",yearBuilt="",totalArea="";
-		if (frequest.equals("Any")) {type = "typeOfProperty LIKE ";} else {type = "typeOfProperty = ";}
+		String bedroom = "", bathroom = "", noOfGarage ="",garageSize="",yearBuilt="",totalArea="";
 		if (frequest2.equals("")) {bedroom = "bedroomCount LIKE ";} else {bedroom = "bedroomCount = ";}
 		if (frequest3.equals("")) {bathroom = "bathroomCount LIKE ";} else {bathroom = "bathroomCount = ";}
 		if (frequest4.equals("")) {noOfGarage = "noOfGarage LIKE ";} else {noOfGarage = "noOfGarage = ";}
 		if (frequest5.equals("")) {garageSize = "garageSize LIKE ";} else {garageSize = "garageSize = ";}
 		if (frequest6.equals("")) {yearBuilt = "yearBuilt LIKE ";} else {yearBuilt = "yearBuilt = ";}
 		if (frequest8.equals("")) {totalArea = "totalArea LIKE ";} else {totalArea = "totalArea = ";}
-		System.out.println(frequest9);
-		String filter = "SELECT * FROM properties.property WHERE " + type + "? AND sellingPrice >= ? AND sellingPrice <= ? AND "+bedroom+"? AND "+bathroom+" ? AND "+noOfGarage+" ?  AND "+garageSize+" ? AND "+yearBuilt+" ? AND basement = ? AND "+totalArea+" ? AND amenities LIKE ? ORDER BY dateTime DESC, clickCount DESC";
+		
+		String filter = "SELECT * FROM properties.property WHERE sellingPrice >= ? AND sellingPrice <= ? AND "+bedroom+"? AND "+bathroom+" ? AND "+noOfGarage+" ?  AND "+garageSize+" ? AND "+yearBuilt+" ? AND basement = ? AND "+totalArea+" ? AND amenities LIKE ? ";
 		
 		
 		for (int i=0; i < size-1; i++) {
@@ -358,51 +357,46 @@ public class PropertyDAO {
 		
 		try {
 			fpstmt = myConn.prepareStatement(filter);
-			if (frequest.equals("Any")) {
-				fpstmt.setString(1, "%");
-			} else {
-				fpstmt.setString(1, frequest);
-			}
-			fpstmt.setInt(2, min);
-			fpstmt.setInt(3, max);
+			fpstmt.setInt(1, min);
+			fpstmt.setInt(2, max);
 			if (frequest2.equals("")) {	//bedroom
-				fpstmt.setString(4, "%");
+				fpstmt.setString(3, "%");
 			} else {
-				fpstmt.setString(4, frequest2);
+				fpstmt.setString(3, frequest2);
 			}
 			//fpstmt.setInt(5, frequest3);
 			if (frequest3.equals("")) { //bathroom
-				fpstmt.setString(5, "%");
+				fpstmt.setString(4, "%");
 			} else {
-				fpstmt.setString(5, frequest3);
+				fpstmt.setString(4, frequest3);
 			}
 			//fpstmt.setDouble(6, frequest4); no of garage
 			if (frequest4.equals("")) {
-				fpstmt.setString(6, "%");
+				fpstmt.setString(5, "%");
 			} else {
-				fpstmt.setString(6, frequest4);
+				fpstmt.setString(5, frequest4);
 			}
 			//fpstmt.setString(7, frequest5);garageSize
 			if (frequest5.equals("")) { 
-				fpstmt.setString(7, "%");
+				fpstmt.setString(6, "%");
 			} else {
-				fpstmt.setString(7, frequest5);
+				fpstmt.setString(6, frequest5);
 			}
 			//fpstmt.setInt(8, frequest6); yearBuilt
 			if (frequest6.equals("")) { 
-				fpstmt.setString(8, "%");
+				fpstmt.setString(7, "%");
 			} else {
-				fpstmt.setString(8, frequest6);
+				fpstmt.setString(7, frequest6);
 			}
-			fpstmt.setInt(9, frequest7);
+			fpstmt.setInt(8, frequest7);
 			//fpstmt.setDouble(10, frequest8);totalArea
 			if (frequest8.equals("")) { 
-				fpstmt.setString(10, "%");
+				fpstmt.setString(9, "%");
 			} else {
-				fpstmt.setString(10, frequest8);
+				fpstmt.setString(9, frequest8);
 			}
 			if (frequest9.contains("Attic")) {amenities.add("Attic");}
-			if (frequest9.contains("Wine cellar")) {amenities.add("Wine cellar");}
+			if (frequest9.contains("Wine Cellar")) {amenities.add("Wine cellar");}
 			if (frequest9.contains("Fire Place")) {amenities.add("Fire Place");}
 			if (frequest9.contains("Backyard")) {amenities.add("Backyard");}
 			if (frequest9.contains("Sprinklers")) {amenities.add("Sprinklers");}
@@ -424,29 +418,43 @@ public class PropertyDAO {
 			if (frequest9.contains("Balcony")) {amenities.add("Balcony");}
 			if (frequest9.contains("Doorman")) {amenities.add("Doorman");}
 			if (frequest9.contains("Recreation area")) {amenities.add("Recreation area");}
-			int j =0;
+			int j = 0;
 			if (size > 0) {
-			for (int i=11; i < amenities.size()+11; i++) {
+			for (int i=10; i < size+10; i++) {
 				fpstmt.setString(i, "%" + amenities.get(j) + "%");
 				j++;
 			}
 			}
 			if (size==0) {
-				fpstmt.setString(11, "%");
+				fpstmt.setString(10, "%");
 			}
 			ResultSet rs = fpstmt.executeQuery();
 			
 			while (rs.next()) {
 				Property p = new Property();
+				p.setPropertyID(rs.getInt("propertyID"));
+				p.setCity(rs.getString("city"));
 				p.setTypeOfProperty(rs.getString("typeOfProperty"));
+				p.setPropertyClassification(rs.getString("propertyClassification"));
 				p.setSellingPrice(rs.getDouble("sellingPrice"));
-				p.setAmenities(rs.getString("amenities"));
 				p.setBedroomCount(rs.getInt("bedroomCount"));
 				p.setBathroomCount(rs.getInt("bathroomCount"));
+				p.setAmenities(rs.getString("amenities"));
 				p.setNoOfGarage(rs.getInt("noOfGarage"));
-				p.setGarageSize(rs.getInt("garageSize"));
+				p.setGarageSize(rs.getDouble("garageSize"));
 				p.setYearBuilt(rs.getString("yearBuilt"));
 				p.setBasement(rs.getInt("basement"));
+				p.setBasementDescription(rs.getString("basementDescription"));
+				p.setRoofingDescription(rs.getString("roofingDescription"));
+				p.setAdditionalRemarks(rs.getString("additionalRemarks"));
+				p.setAvailabilityStatus(rs.getString("availabilityStatus"));
+				p.setNameOfDeveloper(rs.getString("nameOfDeveloper"));
+				p.setNameOfProject(rs.getString("nameOfProject"));
+				p.setDateTime(rs.getString("dateTime"));
+				p.setAddress(rs.getString("address"));
+				p.setCountry(rs.getString("country"));
+				p.setZipCode(rs.getString("zipCode"));
+				p.setClickCount(rs.getInt("clickCount"));
 				p.setTotalArea(rs.getDouble("totalArea"));
 
 				propertyList.add(p);

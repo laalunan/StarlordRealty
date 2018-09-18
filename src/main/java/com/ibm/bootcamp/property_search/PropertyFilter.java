@@ -22,8 +22,7 @@ public class PropertyFilter {
 	
 	@RequestMapping("/filter")
 	public List<Property> filter
-	       (@RequestParam(value="typeOfProperty") String frequest, 
-			@RequestParam(value="minPrice") int min, 
+	       (@RequestParam(value="minPrice") int min, 
 			@RequestParam(value="maxPrice") int max,
 			@RequestParam(value="bedroomCount") String frequest2 ,
 			@RequestParam(value="bathroomCount") String frequest3, 
@@ -35,7 +34,7 @@ public class PropertyFilter {
 			@RequestParam(value="amenities") String frequest9, 
 			@RequestParam(value="size") int size){
 			
-		return PropertyDAO.filterProperty(frequest, min, max, frequest2, frequest3, frequest4, frequest5, frequest6, frequest7, frequest8, frequest9, size);
+		return PropertyDAO.filterProperty(min, max, frequest2, frequest3, frequest4, frequest5, frequest6, frequest7, frequest8, frequest9, size);
 		
 	}
 	
